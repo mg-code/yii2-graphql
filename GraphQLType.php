@@ -18,6 +18,9 @@ abstract class GraphQLType extends BaseObject
      */
     abstract public function name(): string;
 
+    /**
+     * @return array<string, Type|string> $items
+     */
     abstract public function fields(): array;
 
     public function description(): ?string
