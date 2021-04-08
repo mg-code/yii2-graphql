@@ -24,6 +24,9 @@ abstract class GraphQLField extends BaseObject
         return [];
     }
 
+    /**
+     * @return array<string, Type>
+     */
     public function args(): array
     {
         return [];
