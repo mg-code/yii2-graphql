@@ -25,7 +25,7 @@ abstract class GraphQLField extends BaseObject
     }
 
     /**
-     * @return array<string, Type>
+     * @return array<string, Type|mixed>
      */
     public function args(): array
     {
