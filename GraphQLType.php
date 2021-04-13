@@ -11,6 +11,7 @@ use yii\web\ForbiddenHttpException;
 
 abstract class GraphQLType extends BaseObject
 {
+    /** @var bool */
     public $inputObject = false;
 
     /**
