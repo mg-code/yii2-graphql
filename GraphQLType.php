@@ -103,6 +103,14 @@ abstract class GraphQLType extends BaseObject
                 return call_user_func_array($resolver, $args);
             };
         }
+        $camelCaseResolverMethod = $this->getCamelCaseResolverName($name);
+        if (method_exists($this, $camelCaseResolverMethod)) {
+            $resolver = [$this, $camelCaseResolverMethod];
+            return function () use ($resolver) {
+                $args = func_get_args();
+                return call_user_func_array($resolver, $args);
+            };
+        }
 
         return function () use ($name) {
             $arguments = func_get_args();
@@ -127,5 +135,13 @@ abstract class GraphQLType extends BaseObject
             }
         }
         return $type;
+    }
+
+    private function getCamelCaseResolverName($name): string
+    {
+        $parts = explode('_', $name);
+        $converted = array_map('ucfirst', $parts);
+        $result = implode('', $converted);
+        return "resolve{$result}Field";
     }
 }
