@@ -95,6 +95,7 @@ abstract class GraphQLType extends BaseObject
         if (isset($field['resolve'])) {
             return $field['resolve'];
         }
+
         $resolveMethod = 'resolve'.ucfirst($name);
         if (method_exists($this, $resolveMethod)) {
             $resolver = [$this, $resolveMethod];
@@ -103,6 +104,7 @@ abstract class GraphQLType extends BaseObject
                 return call_user_func_array($resolver, $args);
             };
         }
+
         $camelCaseResolverMethod = $this->getCamelCaseResolverName($name);
         if (method_exists($this, $camelCaseResolverMethod)) {
             $resolver = [$this, $camelCaseResolverMethod];
@@ -112,10 +114,11 @@ abstract class GraphQLType extends BaseObject
             };
         }
 
-        return function () use ($name) {
+        return function () use ($name, $field) {
             $arguments = func_get_args();
             $root = $arguments[0];
-            return ArrayHelper::getValue($root, $name);
+            $column = empty($field['alias']) ? $name : $field['alias'];
+            return ArrayHelper::getValue($root, $column);
         };
     }
 
