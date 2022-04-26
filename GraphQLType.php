@@ -63,6 +63,16 @@ abstract class GraphQLType extends BaseObject
                 $field = new $field;
                 $field->name = $name;
                 $field = $field->toArray();
+            } elseif (is_array($field) && !empty($field['type']) && is_string($field['type'])) {
+                $className = $field['type'];
+                $config = $field;
+                unset($config['type']);
+
+                /** @var GraphQLField $field */
+                $field = new $className;
+                $field->name = $name;
+                $field->config = $config;
+                $field = $field->toArray();
             } else {
                 if ($field instanceof Type) {
                     $field = [

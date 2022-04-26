@@ -13,7 +13,9 @@ use yii\web\ForbiddenHttpException;
 abstract class GraphQLField extends BaseObject
 {
     /** @var string|null Used for custom fields */
-    public $name;
+    public ?string $name = null;
+
+    public array $config = [];
 
     abstract public function description(): string;
 
