@@ -20,7 +20,6 @@ abstract class GraphQLType extends BaseObject
     abstract public function name(): string;
 
     /**
-     * @phpstan-return array<string, Type|class-string|array{type: Type, defaultValue?: mixed}>
      * @return array
      */
     abstract public function fields(): array;
