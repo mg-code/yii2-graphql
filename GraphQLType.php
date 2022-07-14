@@ -152,18 +152,6 @@ abstract class GraphQLType extends BaseObject
         }
 
         return \Yii::$app->params['graphQLTypeCache'][static::class];
-
-        static $type;
-        if ($type === null) {
-            $object = new static();
-            $config = $object->toArray();
-            if ($object->inputObject) {
-                $type = new InputObjectType($config);
-            } else {
-                $type = new ObjectType($config);
-            }
-        }
-        return $type;
     }
 
     private function getCamelCaseResolverName($name): string
