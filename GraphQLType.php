@@ -105,7 +105,7 @@ abstract class GraphQLType extends BaseObject
             return $field['resolve'];
         }
 
-        $resolveMethod = 'resolve'.ucfirst($name);
+        $resolveMethod = 'resolve' . ucfirst($name);
         if (method_exists($this, $resolveMethod)) {
             $resolver = [$this, $resolveMethod];
             return function () use ($resolver) {
@@ -136,6 +136,23 @@ abstract class GraphQLType extends BaseObject
      */
     public static function type(): Type
     {
+        if (!isset(\Yii::$app->params['graphQLTypeCache'])) {
+            \Yii::$app->params['graphQLTypeCache'] = [];
+        }
+
+        if (!isset(\Yii::$app->params['graphQLTypeCache'][static::class])) {
+            $object = new static();
+            $config = $object->toArray();
+            if ($object->inputObject) {
+                $type = new InputObjectType($config);
+            } else {
+                $type = new ObjectType($config);
+            }
+            \Yii::$app->params['graphQLTypeCache'][static::class] = $type;
+        }
+
+        return \Yii::$app->params['graphQLTypeCache'][static::class];
+
         static $type;
         if ($type === null) {
             $object = new static();
